@@ -1,0 +1,23 @@
+{
+  "name": "wild_fire_detection",
+  "version": "1.0.0",
+  "description": "HEHEHEHEHEHE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comus3/wild_fire_detection.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/comus3/wild_fire_detection/issues"
+  },
+  "homepage": "https://github.com/comus3/wild_fire_detection#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
