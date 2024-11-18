@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware for parsing JSON body
 app.use(express.json());
 
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, '..', 'public'))); // Adjusted the path to go one level up
+
 // Set up express with socket.io
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
@@ -74,7 +77,6 @@ app.get('/api/data', (req, res) => {
     }
 });
 
-
 app.put('/api/alerts/:deviceId', (req, res) => {
     const { deviceId } = req.params;
     const updates = req.body;
@@ -103,7 +105,6 @@ app.put('/api/alerts/:deviceId', (req, res) => {
         res.status(500).json({ error: 'Failed to update alerts' });
     }
 });
-
 
 // Start the server
 server.listen(PORT, () => {
