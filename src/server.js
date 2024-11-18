@@ -75,27 +75,35 @@ app.get('/api/data', (req, res) => {
 });
 
 
-// Update alerts for a specific device
 app.put('/api/alerts/:deviceId', (req, res) => {
     const { deviceId } = req.params;
-    const updates = req.body; // { t_min, t_max, h_min, h_max, f_min, f_max }
+    const updates = req.body;
+
+    console.log('Received update request for device:', deviceId);
+    console.log('Request body:', updates);
 
     try {
         const db = readDB();
 
         if (!db.alerts[deviceId]) {
+            console.error('Device not found:', deviceId);
             return res.status(404).json({ error: 'Device not found' });
         }
 
         // Update the alerts
         db.alerts[deviceId] = { ...db.alerts[deviceId], ...updates };
+        console.log('Updated alerts for device:', db.alerts[deviceId]);
+
         writeDB(db);
+        console.log('Database successfully updated');
 
         res.json({ message: 'Alerts updated successfully', alerts: db.alerts[deviceId] });
     } catch (err) {
+        console.error('Error updating alerts:', err.message);
         res.status(500).json({ error: 'Failed to update alerts' });
     }
 });
+
 
 // Start the server
 server.listen(PORT, () => {
