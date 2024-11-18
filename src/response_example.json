@@ -1,0 +1,81 @@
+{
+    "end_device_ids": {
+        "device_id": "wfd-end",
+        "application_ids": {
+            "application_id": "wdf-2024"
+        },
+        "dev_eui": "70B3D57ED006B3DB",
+        "join_eui": "0000000000000000",
+        "dev_addr": "260B95BA"
+    },
+    "correlation_ids": [
+        "gs:uplink:01JCZ537VKBKAQA8YCBYSHCHY0"
+    ],
+    "received_at": "2024-11-18T08:09:17.119779191Z",
+    "uplink_message": {
+        "session_key_id": "AZM+UXJjh8eSWCTtZKvK0g==",
+        "f_port": 2,
+        "f_cnt": 1,
+        "frm_payload": "AAACQwAAyEIBJwA=",
+        "decoded_payload": {
+            "degreesC": 0,
+            "flameAnalog": 0,
+            "flameDigital": 200,
+            "humidity": 0.293731689453125
+        },
+        "rx_metadata": [
+            {
+                "gateway_ids": {
+                    "gateway_id": "lew-wirnet-istation-003",
+                    "eui": "7076FF0056072203"
+                },
+                "time": "2024-11-18T08:09:16.893Z",
+                "timestamp": 415984099,
+                "rssi": -113,
+                "channel_rssi": -113,
+                "snr": 5.2,
+                "uplink_token": "CiUKIwoXbGV3LXdpcm5ldC1pc3RhdGlvbi0wMDMSCHB2/wBWByIDEOPTrcYBGgwIrOzruQYQk/6YtAMguL3W1I2V9AIqDAis7Ou5BhDAsuipAw==",
+                "channel_index": 1,
+                "gps_time": "2024-11-18T08:09:16.893Z",
+                "received_at": "2024-11-18T08:09:14.637701465Z"
+            },
+            {
+                "gateway_ids": {
+                    "gateway_id": "lew-wirnet-istation-004",
+                    "eui": "7076FF0056072217"
+                },
+                "time": "2024-11-18T08:09:16.893Z",
+                "timestamp": 1821721811,
+                "rssi": -98,
+                "channel_rssi": -98,
+                "snr": 9.8,
+                "uplink_token": "CiUKIwoXbGV3LXdpcm5ldC1pc3RhdGlvbi0wMDQSCHB2/wBWByIXENOJ1eQGGgwIrOzruQYQ+5qGtwMguLDTuIK+9AIqDAis7Ou5BhDAsuipAw==",
+                "channel_index": 1,
+                "gps_time": "2024-11-18T08:09:16.893Z",
+                "received_at": "2024-11-18T08:09:14.640811453Z"
+            }
+        ],
+        "settings": {
+            "data_rate": {
+                "lora": {
+                    "bandwidth": 125000,
+                    "spreading_factor": 7,
+                    "coding_rate": "4/5"
+                }
+            },
+            "frequency": "867300000",
+            "timestamp": 415984099,
+            "time": "2024-11-18T08:09:16.893Z"
+        },
+        "received_at": "2024-11-18T08:09:16.915888673Z",
+        "confirmed": true,
+        "consumed_airtime": "0.066816s",
+        "network_ids": {
+            "net_id": "000013",
+            "ns_id": "EC656E0000000181",
+            "tenant_id": "ttn",
+            "cluster_id": "eu1",
+            "cluster_address": "eu1.cloud.thethings.network"
+        }
+    }
+}
