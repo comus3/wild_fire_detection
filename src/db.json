@@ -1,0 +1,62 @@
+{
+    "location" : {
+        "wfd-end" : {
+            "x" : 36.7783,
+            "y" : 119.4179
+        },
+        "wfd-testing" : {
+            "x" : 32.444,
+            "y" : 119.4179
+        }
+    },
+    "alerts" : {
+        "wfd-end":{
+            "t_min" : null,
+            "t_max" : 47,
+            "h_min" : 10,
+            "h_max" : null,
+            "f_min" : null,
+            "f_max" : null
+        },
+        "wfd-testing":{
+            "t_min" : 10,
+            "t_max" : 47,
+            "h_min" : 10,
+            "h_max" : 90,
+            "f_min" : 10,
+            "f_max" : 90
+        }
+    },
+    "notifications" : [
+        {
+            "id" : "wtf-end",
+            "message" : "Temperature is too high",
+            "time" : "2021-07-01T12:00:00Z"
+        },
+        {
+            "id" : "wtf-testing",
+            "message" : "Temperature is too low",
+            "time" : "2021-07-01T12:00:00Z"
+        },
+        {
+            "id" : "wtf-testing",
+            "message" : "Humidity is too high",
+            "time" : "2021-07-01T12:00:00Z"
+        },
+        {
+            "id" : "wtf-testing",
+            "message" : "Humidity is too low",
+            "time" : "2021-07-01T12:00:00Z"
+        },
+        {
+            "id" : "wtf-testing",
+            "message" : "Fire is too high",
+            "time" : "2021-07-01T12:00:00Z"
+        },
+        {
+            "id" : "wtf-testing",
+            "message" : "Fire is too low",
+            "time" : "2021-07-01T12:00:00Z"
+        }
+    ]
+}
