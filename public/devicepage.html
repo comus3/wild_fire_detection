@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Details</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="device.js" defer></script>
+  <script src="visibility.js" defer></script>
+</head>
+<body>
+  <div id="device-container">
+    <h3>Device ID: <span id="device-id"></span></h3>
+    <h4>Location: <span id="location"></span></h4>
+    <h4>Date: <span id="date"></span></h4>
+
+    <div id="graph">
+      <!-- Sensor graph will be rendered here -->
+    </div>
+
+    <div id="actions">
+        <button id="setup-alert">Set Up Alert</button>
+        <button id="report-issue">Report an Issue</button>
+    </div>
+      
+    <div id="alert-form" class="hidden">
+        <form id="alert-setup-form">
+          <ul style="list-style-type: none; padding: 0;">
+            <li>
+              <label>
+                Temperature (°C):
+                <input type="number" name="temp-min" placeholder="Min">
+                <input type="number" name="temp-max" placeholder="Max">
+              </label>
+            </li>
+            <li>
+              <label>
+                Humidity (%):
+                <input type="number" name="humidity-min" placeholder="Min">
+                <input type="number" name="humidity-max" placeholder="Max">
+              </label>
+            </li>
+            <li>
+              <label>
+                Flame (Binary):
+                <input type="number" name="flame-min" placeholder="Min">
+                <input type="number" name="flame-max" placeholder="Max">
+              </label>
+            </li>
+            <li>
+              <label>
+                CO (ppm):
+                <input type="number" name="co-min" placeholder="Min">
+                <input type="number" name="co-max" placeholder="Max">
+              </label>
+            </li>
+          </ul>
+          <button type="submit">Save</button>
+          <button type="button" id="cancel-alert">Cancel</button>
+        </form>
+    </div>
+      
+    <div id="issue-form" class="hidden">
+        <form id="issue-report-form">
+          <label>
+            Device ID: <input type="text" id="issue-device-id" readonly>
+          </label>
+          <label>
+            Location: <input type="text" id="issue-location" readonly>
+          </label>
+          <label>
+            Issue: <textarea id="issue-description" placeholder="Describe the issue"></textarea>
+          </label>
+          <button type="submit">Send</button>
+          <button type="button" id="cancel-issue">Cancel</button>
+        </form>
+    </div>
+
+    <button id="back-to-map">Back to the Map</button>
+  </div>
+</body>
+</html>
