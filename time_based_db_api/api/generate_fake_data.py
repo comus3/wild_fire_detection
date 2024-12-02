@@ -17,8 +17,10 @@ def generate_example_data():
             data_point = {
                 "device_id": random.choice(device_ids),
                 "timestamp": timestamp.isoformat(),
-                "temperature": round(random.uniform(20.0, 50.0), 2),
-                "humidity": round(random.uniform(10.0, 90.0), 2)
+                "flameAnalogTest2": round(random.uniform(20.0, 50.0), 2),
+                "flameDigital": round(random.uniform(10.0, 90.0), 2),
+                "humidity": round(random.uniform(10.0, 90.0), 2),
+                "flameAnalog": round(random.uniform(10.0, 90.0), 2)
             }
             data.append(data_point)
 
@@ -30,3 +32,10 @@ def generate_example_data():
 
 # Run the data generation
 generate_example_data()
+
+""" 
+        "flameAnalog": 130,
+        "flameAnalogTest2": 1.1546699346036493e-42,
+        "flameDigital": 0,
+        "humidity": 100 
+"""
