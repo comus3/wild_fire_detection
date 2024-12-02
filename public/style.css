@@ -1,0 +1,196 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.device-info {
+  background: #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: left;
+  width: 80%;
+}
+
+canvas {
+  max-width: 100%; /* Ensures it doesn't exceed the container */
+  max-height: 400px; /* Sets the maximum height */
+  margin: 20px 0;
+}
+
+.chart-container {
+  width: 90%; /* Adjust the width of the container */
+  max-width: 800px; /* Set a maximum width */
+  height: 400px; /* Set the height */
+  margin: 0 auto; /* Center the graph */
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  justify-content: center; /* Centers the buttons horizontally */
+}
+
+.alert-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.alert-button.green {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.alert-button.orange {
+  background-color: #FFA500;
+  color: #fff;
+}
+
+.alert-button.red {
+  background-color: #FF3333;
+  color: #fff;
+}
+
+.alert-button.back {
+  margin-top: 20px;
+  background-color: #ccc;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-container {
+  background: #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  width: 80%;
+}
+
+input, textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 10px;
+}
+
+#map {
+  width: 100%;
+  height: calc(100vh - 200px);
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}
+
+.alert-button {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff3333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.alert-button:hover {
+  background-color: #cc0000;
+}
+
+.alerts {
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+  margin: 10px 0;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.alerts p {
+  margin: 5px 0;
+  color: #333;
+}
+
+/* Style for the form rows */
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.form-row label {
+  flex: 2;
+  text-align: left;
+}
+
+.form-row input {
+  flex: 1;
+  margin: 0 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-row span {
+  margin: 0 5px;
+  color: #666;
+}
+
+/* Ensure form stays aligned on smaller screens */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-row label {
+    margin-bottom: 5px;
+  }
+
+  .form-row input {
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  .form-row span {
+    display: none; /* Hide the dash for better mobile layout */
+  }
+}
+
+
+@media (max-width: 768px) {
+  .alert-button {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .alert-button {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+  }
+  #map {
+    height: calc(100vh - 250px);
+  }
+}

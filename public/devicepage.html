@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Page</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Real-time Device Information -->
+    <div class="device-info">
+      <p><strong>Device ID:</strong> <span id="deviceId">Loading...</span></p>
+      <p><strong>Location:</strong> <span id="deviceLocation">Loading...</span></p>
+      <p><strong>Date:</strong> <span id="deviceDate">Loading...</span></p>
+    </div>
+
+    <!-- Graph Container -->
+    <div class="chart-container">
+      <canvas id="sensorGraph"></canvas>
+    </div>
+
+    <!-- Buttons -->
+    <div class="button-container">
+      <button class="alert-button green" onclick="toggleForm('alertForm')">Set Up Alert</button>
+      <button class="alert-button orange" onclick="toggleForm('issueForm')">Report an Issue</button>
+    </div>
+
+    <!-- Alert Form -->
+    <form id="alertForm" class="hidden form-container">
+      <h3>Enter the min and max values for each parameter:</h3>
+      <div class="form-row">
+        <label>Temperature [°C]:</label>
+        <input type="number" name="temp_min" placeholder="Min" required>
+        <span>-</span>
+        <input type="number" name="temp_max" placeholder="Max" required>
+      </div>
+      <div class="form-row">
+        <label>Humidity [%]:</label>
+        <input type="number" name="humidity_min" placeholder="Min" required>
+        <span>-</span>
+        <input type="number" name="humidity_max" placeholder="Max" required>
+      </div>
+      <div class="form-row">
+        <label>Flame:</label>
+        <input type="number" name="flame_min" placeholder="Min" required>
+        <span>-</span>
+        <input type="number" name="flame_max" placeholder="Max" required>
+      </div>
+      <div class="form-row">
+        <label>CO [ppm]:</label>
+        <input type="number" name="co_min" placeholder="Min" required>
+        <span>-</span>
+        <input type="number" name="co_max" placeholder="Max" required>
+      </div>
+      <div class="button-container">
+        <button type="submit" class="alert-button green">Save</button>
+        <button type="button" class="alert-button red" onclick="toggleForm('alertForm')">Cancel</button>
+      </div>
+    </form>    
+
+    <!-- Issue Form -->
+    <form id="issueForm" class="hidden form-container">
+      <h3>Report the issue below:</h3>
+      <label>Device ID:</label>
+      <input type="text" name="device_id" id="issueDeviceId" readonly><br>
+      <label>Location:</label>
+      <input type="text" name="location" id="issueDeviceLocation" readonly><br>
+      <label>Issue:</label>
+      <textarea name="issue" placeholder="Describe the issue..."></textarea><br>
+      <div class="button-container">
+        <button type="submit" class="alert-button green">Send</button>
+        <button type="button" class="alert-button red" onclick="toggleForm('issueForm')">Cancel</button>
+      </div>
+    </form>
+
+    <!-- Back to Map -->
+    <button class="alert-button back" onclick="window.location.href='index.html'">Back to the map</button>
+  </div>
+
+  <script src="js/device.js"></script>
+</body>
+</html>
