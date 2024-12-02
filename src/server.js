@@ -4,6 +4,7 @@ const express = require('express');
 const mqtt = require('mqtt');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');  // To make HTTP requests to the Flask API
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,72 +38,66 @@ client.on('connect', () => {
         if (err) {
             console.error('Subscription error:', err);
         } else {
-            console.log('Subscribed to topic: wfd-end');
+            console.log('Subscribed to topic: v3/{username}/devices/+/up');
         }
     });
 });
 
 client.on('message', (topic, message) => {
     console.log(`Received message from ${topic}: ${message.toString()}`);
-    io.emit('event-name', message.toString());
+    
+    // Parse the message payload
+    const payload = JSON.parse(message.toString());
+
+    // Extract the relevant fields from the payload
+    const device_id = payload.end_device_ids.device_id; // "wfd-end"
+    const timestamp = payload.received_at; // "2024-12-02T09:50:08.103765172Z"
+    const decoded_payload = payload.uplink_message.decoded_payload; // { flameAnalog: 130, flameAnalogTest2: 1.331, flameDigital: 0, humidity: 100 }
+
+    // Format the data for the database
+    const dbData = {
+        device_id: device_id,
+        timestamp: timestamp,
+        ...decoded_payload // Spread the decoded_payload fields into the object
+    };
+
+    console.log('Formatted payload for DB:', dbData);
+
+    // Now send the formatted data to the Flask API endpoint to store it in the DB
+    fetch('http://localhost:5000/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dbData),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Data sent to Flask:', data))
+    .catch(error => console.error('Error sending data to Flask:', error));
+
+    // Emit the data to connected clients via Socket.IO
+    io.emit('event-name', dbData);
 });
+
 
 client.on('error', (err) => {
     console.error('Connection error:', err);
 });
 
-// Utility function to read and write the db.json file
-const readDB = () => {
-    const data = fs.readFileSync(path.join(__dirname, 'db.json'), 'utf-8');
-    return JSON.parse(data);
-};
-
-const writeDB = (data) => {
-    fs.writeFileSync(path.join(__dirname, 'db.json'), JSON.stringify(data, null, 2));
-};
-
 // Routes
 // Get data for locations, alerts, and notifications
-app.get('/api/data', (req, res) => {
+app.get('/api/data', async (req, res) => {
     try {
-        const db = readDB();
-        res.json({
-            location: db.location,
-            alerts: db.alerts,
-            notifications: db.notifications,
+        // Call the Flask app's /data GET endpoint
+        const flaskApiUrl = 'http://localhost:5000/data';
+        const response = await axios.get(flaskApiUrl, {
+            params: req.query // Forward query parameters to Flask app
         });
+
+        res.json(response.data);  // Send the data from Flask API to the client
     } catch (err) {
-        console.error('Error reading database:', err.message); // Log the error
-        res.status(500).json({ error: 'Failed to read database' });
-    }
-});
-
-app.put('/api/alerts/:deviceId', (req, res) => {
-    const { deviceId } = req.params;
-    const updates = req.body;
-
-    console.log('Received update request for device:', deviceId);
-    console.log('Request body:', updates);
-
-    try {
-        const db = readDB();
-
-        if (!db.alerts[deviceId]) {
-            console.error('Device not found:', deviceId);
-            return res.status(404).json({ error: 'Device not found' });
-        }
-
-        // Update the alerts
-        db.alerts[deviceId] = { ...db.alerts[deviceId], ...updates };
-        console.log('Updated alerts for device:', db.alerts[deviceId]);
-
-        writeDB(db);
-        console.log('Database successfully updated');
-
-        res.json({ message: 'Alerts updated successfully', alerts: db.alerts[deviceId] });
-    } catch (err) {
-        console.error('Error updating alerts:', err.message);
-        res.status(500).json({ error: 'Failed to update alerts' });
+        console.error('Error fetching data from Flask API:', err.message);
+        res.status(500).json({ error: 'Failed to fetch data from Flask API' });
     }
 });
 

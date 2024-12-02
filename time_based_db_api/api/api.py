@@ -159,6 +159,7 @@ def add_data():
     all_data = read_data()
     all_data.append(data)
     write_data(all_data)
+    print(f"Data added: {data}")
     return jsonify({"message": "Data added successfully"}), 201
 
 @app.route('/data', methods=['GET'])
