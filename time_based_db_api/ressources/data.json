@@ -532,5 +532,37 @@
         "timestamp": "2024-12-01T12:00:00Z",
         "temperature": 35.5,
         "humidity": 65.0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-02T10:00:12.158104923Z",
+        "flameAnalog": 130,
+        "flameAnalogTest2": 1.1546699346036493e-42,
+        "flameDigital": 0,
+        "humidity": 100
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-02T10:00:27.652301821Z",
+        "flameAnalog": 130,
+        "flameAnalogTest2": 1.3396413318945251e-42,
+        "flameDigital": 0,
+        "humidity": 100
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-02T10:00:41.898068205Z",
+        "flameAnalog": 130,
+        "flameAnalogTest2": 0,
+        "flameDigital": 0,
+        "humidity": 100
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-02T10:00:57.663655780Z",
+        "flameAnalog": 130,
+        "flameAnalogTest2": 1.2877932887145069e-42,
+        "flameDigital": 0,
+        "humidity": 100
     }
 ]
