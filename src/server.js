@@ -44,7 +44,7 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, message) => {
-    console.log(`Received message from ${topic}: ${message.toString()}`);
+    console.log(`Received message from ${topic}`);
     
     // Parse the message payload
     const payload = JSON.parse(message.toString());
