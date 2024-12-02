@@ -85,7 +85,6 @@ client.on('error', (err) => {
 });
 
 // Routes
-// Get data for locations, alerts, and notifications
 app.get('/api/data', async (req, res) => {
     try {
         // Call the Flask app's /data GET endpoint
@@ -100,6 +99,61 @@ app.get('/api/data', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch data from Flask API' });
     }
 });
+
+// Forward GET requests to Flask /locations endpoint
+app.get('/api/locations', async (req, res) => {
+    try {
+        const flaskApiUrl = 'http://localhost:5000/locations';
+        const response = await axios.get(flaskApiUrl);
+        res.json(response.data);  // Send the locations data from Flask API to the client
+    } catch (err) {
+        console.error('Error fetching locations from Flask API:', err.message);
+        res.status(500).json({ error: 'Failed to fetch locations from Flask API' });
+    }
+});
+
+
+// Forward GET requests to Flask /getalerts/:device_id endpoint
+app.get('/api/getalerts/:device_id', async (req, res) => {
+    try {
+        const deviceId = req.params.device_id;
+        const flaskApiUrl = `http://localhost:5000/getalerts/${deviceId}`;
+        const response = await axios.get(flaskApiUrl);
+        res.json(response.data);  // Send the alerts data from Flask API to the client
+    } catch (err) {
+        console.error('Error fetching alerts from Flask API:', err.message);
+        res.status(500).json({ error: 'Failed to fetch alerts from Flask API' });
+    }
+});
+
+
+// Forward GET requests to Flask /get_notifications endpoint
+app.get('/api/get_notifications', async (req, res) => {
+    try {
+        const flaskApiUrl = 'http://localhost:5000/get_notifications';
+        const response = await axios.get(flaskApiUrl);
+        res.json(response.data);  // Send the notifications data from Flask API to the client
+    } catch (err) {
+        console.error('Error fetching notifications from Flask API:', err.message);
+        res.status(500).json({ error: 'Failed to fetch notifications from Flask API' });
+    }
+});
+
+// Forward POST requests to Flask /modify_alerts/:device_id endpoint
+app.post('/api/modify_alerts/:device_id', async (req, res) => {
+    try {
+        const deviceId = req.params.device_id;
+        const flaskApiUrl = `http://localhost:5000/modify_alerts/${deviceId}`;
+        const response = await axios.post(flaskApiUrl, req.body);  // Forward the body content
+        res.json(response.data);  // Send the modified alerts data from Flask API to the client
+    } catch (err) {
+        console.error('Error modifying alerts in Flask API:', err.message);
+        res.status(500).json({ error: 'Failed to modify alerts in Flask API' });
+    }
+});
+
+
+
 
 // Start the server
 server.listen(PORT, () => {
