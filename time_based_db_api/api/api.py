@@ -11,11 +11,14 @@ app = Flask(__name__)
 DB_INFO_PATH = 'ressources/db_info.json'
 DATA_PATH = 'ressources/data.json'
 
+with open(DB_INFO_PATH) as f:
+    db_info = json.load(f)
+
 def run_retention_task():
     """
     Task to enforce data retention policy.
     """
-    retention_period = 30  # RETENTION PERD IN DAYS
+    retention_period = 30  # Retention period in days
     all_data = read_data()
     print(f"Running retention task. Data contains {len(all_data)} data points.")
     filtered_data = enforce_retention(all_data, retention_period)
@@ -34,7 +37,6 @@ def enforce_retention(data, retention_period):
     Returns:
         list: Filtered list of data points within the retention period.
     """
-    
     cutoff_time = datetime.utcnow() - timedelta(days=retention_period)
     return [d for d in data if datetime.fromisoformat(d['timestamp']) > cutoff_time]
 
@@ -152,6 +154,38 @@ def help():
         }
     })
 
+# Route to get the location information
+@app.route('/locations', methods=['GET'])
+def get_locations():
+    return jsonify(db_info['location'])
+
+# Route to get alerts for a specific device id
+@app.route('/getalerts/<device_id>', methods=['GET'])
+def get_alerts(device_id):
+    alerts = db_info['alerts'].get(device_id)
+    if alerts:
+        return jsonify(alerts)
+    else:
+        return jsonify({"error": "Device ID not found"}), 404
+
+# Route to get all notifications
+@app.route('/get_notifications', methods=['GET'])
+def get_notifications():
+    return jsonify(db_info['notifications'])
+
+# Route to modify the alerts for a device
+@app.route('/modify_alerts/<device_id>', methods=['POST'])
+def modify_alerts(device_id):
+    if device_id in db_info['alerts']:
+        data = request.get_json()
+        db_info['alerts'][device_id].update(data)
+        return jsonify({"message": "Alerts updated successfully", "alerts": db_info['alerts'][device_id]})
+    else:
+        return jsonify({"error": "Device ID not found"}), 404
+
+
+
+
 @app.route('/data', methods=['POST'])
 def add_data():
     """Add new data point."""
@@ -184,7 +218,7 @@ def get_data():
 
 # Scheduler setup
 scheduler = BackgroundScheduler()
-scheduler.add_job(run_retention_task, 'interval', hours=12)  # Run every 12 hour
+scheduler.add_job(run_retention_task, 'interval', hours=12)  # Run every 12 hours
 scheduler.start()
 
 
