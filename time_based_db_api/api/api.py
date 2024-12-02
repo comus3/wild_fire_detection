@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
@@ -53,7 +54,6 @@ def write_data(data):
     with open(DATA_PATH, 'w') as f:
         json.dump(data, f, indent=4)
 
-from datetime import datetime, timedelta
 
 def interpolate_data(device_data, start_time, end_time, interval):
     """
@@ -68,8 +68,18 @@ def interpolate_data(device_data, start_time, end_time, interval):
     Returns:
         list: Interpolated data points with timestamps and interpolated values.
     """
-    # Ensure data is sorted by timestamp
-    device_data.sort(key=lambda x: datetime.fromisoformat(x['timestamp']))
+    # Ensure all timestamps are naive (remove timezone information if present)
+    device_data = [
+        {**d, "timestamp": datetime.fromisoformat(d["timestamp"]).replace(tzinfo=None)}  # Remove timezone info
+        for d in device_data
+    ]
+
+    # Ensure start_time and end_time are naive (remove timezone information if present)
+    start_time = start_time.replace(tzinfo=None)
+    end_time = end_time.replace(tzinfo=None)
+
+    # Sort device_data by timestamp
+    device_data.sort(key=lambda x: x["timestamp"])
 
     # Create list of all target timestamps
     target_timestamps = [
@@ -82,7 +92,7 @@ def interpolate_data(device_data, start_time, end_time, interval):
 
     for target_time in target_timestamps:
         # Find two closest raw data points (before and after target_time)
-        while current_index < len(device_data) - 1 and datetime.fromisoformat(device_data[current_index + 1]['timestamp']) <= target_time:
+        while current_index < len(device_data) - 1 and device_data[current_index + 1]["timestamp"] <= target_time:
             current_index += 1
 
         if current_index == len(device_data) - 1:
@@ -93,14 +103,14 @@ def interpolate_data(device_data, start_time, end_time, interval):
         point_after = device_data[current_index + 1]
 
         # Check if target_time falls between the two points
-        t_before = datetime.fromisoformat(point_before['timestamp'])
-        t_after = datetime.fromisoformat(point_after['timestamp'])
+        t_before = point_before["timestamp"]
+        t_after = point_after["timestamp"]
 
         if t_before <= target_time <= t_after:
             # Perform linear interpolation for numeric fields
             interpolated_point = {"timestamp": target_time.isoformat()}
             for key in point_before:
-                if key == 'timestamp' or key == 'device_id':
+                if key == "timestamp" or key == "device_id":
                     continue
                 v_before = point_before[key]
                 v_after = point_after[key]

@@ -508,5 +508,29 @@
         "timestamp": "2024-12-02T13:02:29.548247",
         "temperature": 48.37,
         "humidity": 60.21
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-01T12:00:00Z",
+        "temperature": 35.5,
+        "humidity": 65.0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-01T12:00:00Z",
+        "temperature": 35.5,
+        "humidity": 65.0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-01T12:00:00Z",
+        "temperature": 35.5,
+        "humidity": 65.0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-01T12:00:00Z",
+        "temperature": 35.5,
+        "humidity": 65.0
     }
 ]
