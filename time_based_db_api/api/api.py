@@ -125,6 +125,32 @@ def interpolate_data(device_data, start_time, end_time, interval):
 
     return interpolated
 
+@app.route('/help', methods=['GET'])
+def help():
+    """API help."""
+    return jsonify({
+        "endpoints": {
+            "/data": {
+                "POST": {
+                    "description": "Add new data point.",
+                    "parameters": {
+                        "device_id": "Device ID",
+                        "timestamp": "Timestamp (ISO format)",
+                        "value": "Value"
+                    }
+                },
+                "GET": {
+                    "description": "Query data with optional interpolation.",
+                    "parameters": {
+                        "device_id": "Device ID",
+                        "start_time": "Start time (ISO format)",
+                        "end_time": "End time (ISO format)",
+                        "interval": "Interpolation interval in seconds (default: 1)"
+                    }
+                }
+            }
+        }
+    })
 
 @app.route('/data', methods=['POST'])
 def add_data():
