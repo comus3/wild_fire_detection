@@ -62,15 +62,22 @@
       
     <div id="issue-form" class="hidden">
         <form id="issue-report-form">
-          <label>
-            Device ID: <input type="text" id="issue-device-id" readonly>
-          </label>
-          <label>
-            Location: <input type="text" id="issue-location" readonly>
-          </label>
-          <label>
-            Issue: <textarea id="issue-description" placeholder="Describe the issue"></textarea>
-          </label>
+            <li>
+                <label>
+                    Device ID: <input type="text" id="issue-device-id" readonly>
+                </label>
+            </li>
+            <li>
+                <label>
+                    Location: <input type="text" id="issue-location" readonly>
+                </label>
+            </li>
+            <li>
+                <label>
+                    Issue: <textarea id="issue-description" placeholder="Describe the issue"></textarea>
+                </label>
+            </li>
+
           <button type="submit">Send</button>
           <button type="button" id="cancel-issue">Cancel</button>
         </form>
