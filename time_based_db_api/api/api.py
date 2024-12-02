@@ -3,6 +3,10 @@ import json
 import os
 from datetime import datetime, timedelta, timezone
 
+import urllib.request
+import sys
+
+
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
@@ -38,6 +42,47 @@ def enforce_retention(data, retention_period):
     cutoff_time = datetime.utcnow() - timedelta(days=retention_period)
     return [d for d in data if datetime.fromisoformat(d['timestamp']) > cutoff_time]
 
+
+#If scheduled task
+def fetch_weather_data():
+    """
+    Fetches weather data and processes it.
+    """
+    try:
+        ResultBytes = urllib.request.urlopen("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/36.045930%2C%20-118.359780?unitGroup=metric&key=FWULADMJW5NBRPTAR4P88WX5C&contentType=json") 
+        jsonData = json.load(ResultBytes)
+        print(f"Weather data fetched successfully: {jsonData}")
+        # Optionally, save to file or integrate with existing data
+        # write_data(jsonData) # Uncomment to save to `data.json`
+    except urllib.error.HTTPError as e:
+        ErrorInfo = e.read().decode()
+        print('HTTPError:', e.code, ErrorInfo)
+    except urllib.error.URLError as e:
+        ErrorInfo = e.reason
+        print('URLError:', ErrorInfo)
+
+
+@app.route('/weather', methods=['GET'])
+def get_weather():
+    """
+    Fetch and return current weather conditions.
+    """
+    try:
+        # Fetch the data from the weather API
+        ResultBytes = urllib.request.urlopen("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/36.045930%2C%20-118.359780?unitGroup=metric&include=current&key=FWULADMJW5NBRPTAR4P88WX5C&contentType=json")
+        jsonData = json.load(ResultBytes)
+        
+        # Extract 'currentConditions'
+        if "currentConditions" in jsonData:
+            return jsonify(jsonData["currentConditions"])
+        else:
+            return jsonify({"error": "No current conditions found in response"}), 500
+
+    except urllib.error.HTTPError as e:
+        ErrorInfo = e.read().decode()
+        return jsonify({"error": f"HTTPError: {e.code}", "details": ErrorInfo}), 500
+    except urllib.error.URLError as e:
+        return jsonify({"error": "URLError", "details": str(e.reason)}), 500
 
 # Load configurations
 def load_db_info():
@@ -180,11 +225,15 @@ def get_data():
 
     # Interpolate data
     interpolated = interpolate_data(device_data, start_time, end_time, int(interval))
+
+
+
     return jsonify(interpolated)
 
 # Scheduler setup
 scheduler = BackgroundScheduler()
 scheduler.add_job(run_retention_task, 'interval', hours=12)  # Run every 12 hour
+#scheduler.add_job(fetch_weather_data, 'interval', hours=6)  # Fetch weather_api data every 6 hours
 scheduler.start()
 
 
