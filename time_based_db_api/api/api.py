@@ -74,7 +74,18 @@ def get_weather():
         
         # Extract 'currentConditions'
         if "currentConditions" in jsonData:
-            return jsonify(jsonData["currentConditions"])
+            current_conditions = jsonData["currentConditions"]
+            filtered_data = {
+                "temperature": current_conditions["temp"],
+                "humidity": current_conditions["humidity"],
+                "sunrise": current_conditions["sunrise"],
+                "sunset": current_conditions["sunset"],
+                "solarradiation": current_conditions["solarradiation"],
+                "windgust": current_conditions["windgust"],
+                "windspeed": current_conditions["windspeed"],
+                "datetime": current_conditions["datetime"],
+            }
+            return jsonify(filtered_data)
         else:
             return jsonify({"error": "No current conditions found in response"}), 500
 
