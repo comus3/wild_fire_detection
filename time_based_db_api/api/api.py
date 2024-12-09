@@ -204,16 +204,37 @@ def get_data():
     end_time = request.args.get('end_time')
     interval = request.args.get('interval', 1)  # Default interval: 1 second
 
-    # Parse times
-    start_time = datetime.fromisoformat(start_time)
-    end_time = datetime.fromisoformat(end_time)
+    # Check for missing parameters
+    missing_params = []
+    if not device_id:
+        missing_params.append("device_id")
+    if not start_time:
+        missing_params.append("start_time")
+    if not end_time:
+        missing_params.append("end_time")
+
+    if missing_params:
+        return jsonify({"error": f"The following parameters are missing: {', '.join(missing_params)}"}), 400
+
+    try:
+        start_time = datetime.fromisoformat(str(start_time))
+        end_time = datetime.fromisoformat(str(end_time))
+    except ValueError:
+        return jsonify({"error": "Invalid date format. Use ISO 8601 format."}), 400
+
+    try:
+        interval = int(interval)
+        if interval <= 0:
+            raise ValueError
+    except ValueError:
+        return jsonify({"error": "Interval must be a positive integer"}), 400
 
     # Load and filter data
     all_data = read_data()
     device_data = [d for d in all_data if d['device_id'] == device_id]
 
     # Interpolate data
-    interpolated = interpolate_data(device_data, start_time, end_time, int(interval))
+    interpolated = interpolate_data(device_data, start_time, end_time, interval)
     return jsonify(interpolated)
 
 # Scheduler setup
