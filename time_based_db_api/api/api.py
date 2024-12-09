@@ -14,6 +14,11 @@ DATA_PATH = 'ressources/data.json'
 with open(DB_INFO_PATH) as f:
     db_info = json.load(f)
 
+def check_alerts(data):
+    # check if the data for the device id is not over or under certain values. if it is add a notfication in the db_info or increment the consecutive count
+    return 0
+    
+    
 def run_retention_task():
     """
     Task to enforce data retention policy.
