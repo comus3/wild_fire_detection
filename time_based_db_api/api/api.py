@@ -45,6 +45,10 @@ def enforce_retention(data, retention_period):
 def load_db_info():
     with open(DB_INFO_PATH, 'r') as f:
         return json.load(f)
+    
+def write_db_info(data):
+    with open(DB_INFO_PATH, 'w') as f:
+        json.dump(data, f, indent=4)
 
 def read_data():
     if not os.path.exists(DATA_PATH):
@@ -183,6 +187,70 @@ def modify_alerts(device_id):
     else:
         return jsonify({"error": "Device ID not found"}), 404
 
+def increment_counter(counter, json_data):
+    alerts = json_data.get("alerts", {})
+    
+    device_id = json_data.get("device_id", "")
+    if device_id in alerts:
+        device_alert = alerts[device_id]
+        
+        if counter in device_alert:
+            device_alert[counter] += 1
+            print(f"{counter} incremented to: {device_alert[counter]}")
+        else:
+            print(f"Error: '{counter}' key not found in '{device_id}' alert")
+    else:
+        print(f"Error: '{device_id}' not found in alerts")
+
+    return json_data
+
+def reset_counter(counter, json_data):
+    alerts = json_data.get("alerts", {})
+    device_id = json_data.get("device_id", "")
+    if device_id in alerts:
+        device_alert = alerts[device_id]
+        if counter in device_alert:
+            device_alert[counter] = 0
+            print(f"{counter} reset to: {device_alert[counter]}")
+        else:
+            print(f"Error: '{counter}' key not found in '{device_id}' alert")
+    else:
+        print(f"Error: '{device_id}' not found in alerts")
+
+    return json_data
+
+def add_notification(device_id, message):
+    notification = {
+        "id": device_id,
+        "message": message,
+        "time": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    }
+    db_info = load_db_info()
+    db_info["notifications"].append(notification)
+    write_db_info(db_info)  # Write the updated data back to the file
+
+def check_alertes(data):
+    mins_maxs = load_db_info()["alerts"][data["device_id"]]
+    payload = data.copy
+
+
+    # Vérifier si les données récupérées sont au delà des normes admises, si c'est le cas on incrémente un compteur
+    if payload["temperature"] > mins_maxs["t_max"]:
+        increment_counter("counter_tmax", load_db_info())
+    if payload["humidity"] < mins_maxs["h_min"]:
+        increment_counter("counter_hmin", load_db_info())
+    
+    # Vérifier si les données sont au dela des normes depuis un moment, si c'est le cas une alerte est envoyée
+    if payload["temperature"]< (mins_maxs["t_max"] - 3) & mins_maxs["counter_tmax"] > 0:   # -3 pour avoir un double seuil
+        reset_counter("counter_tmax", load_db_info())
+    if payload["humidity"] > (mins_maxs["h_min"] + 3)  & mins_maxs["counter_hmin"] > 0:     # +3 pour avoir un double seuil
+        reset_counter("counter_hmin", load_db_info())
+    
+    if mins_maxs["counter_hmin"] > 3:
+        add_notification(data["device_id"], "Humidity is dangerously low")
+    if mins_maxs["counter_tmax"] > 3:
+        add_notification(data["device_id"], "Temperature is dangerously high")
+
 
 
 
@@ -194,6 +262,7 @@ def add_data():
     all_data.append(data)
     write_data(all_data)
     print(f"Data added: {data}")
+    check_alertes(data)
     return jsonify({"message": "Data added successfully"}), 201
 
 @app.route('/data', methods=['GET'])
