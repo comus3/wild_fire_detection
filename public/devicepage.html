@@ -28,7 +28,31 @@
       <button class="alert-button green" onclick="toggleForm('alertForm')">Set Up Alert</button>
       <button class="alert-button orange" onclick="toggleForm('issueForm')">Report an Issue</button>
     </div>
-
+    <!-- Time Interval Form -->
+    <form id="settingsForm" class="form-container">
+        <h3>Select Time Interval and Fetch Frequency:</h3>
+        <div class="form-row">
+        <label>Start Time (relative):</label>
+        <select id="startTime">
+            <option value="1">Last 1 Hour</option>
+            <option value="6">Last 6 Hours</option>
+            <option value="12">Last 12 Hours</option>
+            <option value="24" selected>Last 24 Hours</option>
+        </select>
+        </div>
+        <div class="form-row">
+        <label>Interval (seconds):</label>
+        <input type="number" id="interval" placeholder="e.g., 3600" required>
+        </div>
+        <div class="form-row">
+        <label>Fetch Frequency (seconds):</label>
+        <input type="number" id="fetchFrequency" placeholder="e.g., 30" required>
+        </div>
+        <div class="button-container">
+        <button type="button" class="alert-button green" onclick="applySettings()">Apply</button>
+        </div>
+    </form>
+  
     <!-- Alert Form -->
     <form id="alertForm" class="hidden form-container">
       <h3>Enter the min and max values for each parameter:</h3>
