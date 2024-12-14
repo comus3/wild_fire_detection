@@ -3,3 +3,7 @@ npm-debug.log
 .env
 .DS_Store
 VENV
+*.pyc
+*.pyo
+*.pyd
+__pycache__
