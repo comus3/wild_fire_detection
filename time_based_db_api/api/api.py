@@ -187,22 +187,27 @@ def modify_alerts(device_id):
     else:
         return jsonify({"error": "Device ID not found"}), 404
 
-def increment_counter(counter, json_data):
+def increment_counter(counter, device_id, json_data):
+    print(f"Incrementing counter '{counter}' for device...")  # Debug
     alerts = json_data.get("alerts", {})
-    
-    device_id = json_data.get("device_id", "")
+    print(f"Alerts: {alerts}")  # Debug: Show the entire alerts section
+
+    #device_id = json_data.get(device_id)
+    print(f"Device ID: {device_id}")  # Debug: Show the device ID
+
     if device_id in alerts:
         device_alert = alerts[device_id]
-        
+        print(f"Found alerts for device '{device_id}': {device_alert}")  # Debug: Show the device's alert data
         if counter in device_alert:
+            print(f"Before incrementing, {counter}: {device_alert[counter]}")  # Debug: Show the counter value before increment
             device_alert[counter] += 1
-            print(f"{counter} incremented to: {device_alert[counter]}")
+            print(f"{counter} incremented to: {device_alert[counter]}")  # Debug: Show the new counter value after increment
         else:
-            print(f"Error: '{counter}' key not found in '{device_id}' alert")
+            print(f"Error: '{counter}' key not found in '{device_alert}' alert")
     else:
         print(f"Error: '{device_id}' not found in alerts")
 
-    return json_data
+    return write_db_info(json_data)
 
 def reset_counter(counter, json_data):
     alerts = json_data.get("alerts", {})
@@ -230,25 +235,62 @@ def add_notification(device_id, message):
     write_db_info(db_info)  # Write the updated data back to the file
 
 def check_alertes(data):
-    mins_maxs = load_db_info()["alerts"][data["device_id"]]
-    payload = data.copy
+    # Load the alerts data from the JSON
+    print("Loading data from JSON...")
+    db_info = load_db_info()
+    print(f"Loaded db_info: {db_info}")  # Debug: print the entire db_info
 
+    # Access the specific alert for the device from the loaded data
+    try:
+        mins_maxs = db_info["alerts"][data["device_id"]]
+        print(f"mins_maxs for device {data['device_id']}: {mins_maxs}")  # Debug: check mins_maxs
+    except KeyError as e:
+        print(f"Error: Key not found - {e}")
+        return  # Exit if the device_id does not exist in alerts
 
-    # Vérifier si les données récupérées sont au delà des normes admises, si c'est le cas on incrémente un compteur
+    # Copy the payload data
+    payload = data.copy()
+    print(f"Payload: {payload}")  # Debug: print the payload to check its contents
+    device_id = payload["device_id"]
+
+    # Check if the temperature exceeds the max allowed
+    print(f"Checking if temperature {payload['temperature']} exceeds t_max {mins_maxs['t_max']}")  # Debug
     if payload["temperature"] > mins_maxs["t_max"]:
-        increment_counter("counter_tmax", load_db_info())
+        print(f"Temperature {payload['temperature']} exceeds t_max {mins_maxs['t_max']}")  # Debug
+        increment_counter("counter_tmax",device_id, db_info)
+    else:
+        print(f"Temperature {payload['temperature']} is within the allowed range.")  # Debug
+
+    # Check if the humidity is below the min allowed
+    print(f"Checking if humidity {payload['humidity']} is below h_min {mins_maxs['h_min']}")  # Debug
     if payload["humidity"] < mins_maxs["h_min"]:
-        increment_counter("counter_hmin", load_db_info())
-    
-    # Vérifier si les données sont au dela des normes depuis un moment, si c'est le cas une alerte est envoyée
-    if payload["temperature"]< (mins_maxs["t_max"] - 3) & mins_maxs["counter_tmax"] > 0:   # -3 pour avoir un double seuil
-        reset_counter("counter_tmax", load_db_info())
-    if payload["humidity"] > (mins_maxs["h_min"] + 3)  & mins_maxs["counter_hmin"] > 0:     # +3 pour avoir un double seuil
-        reset_counter("counter_hmin", load_db_info())
-    
-    if mins_maxs["counter_hmin"] > 3:
+        print(f"Humidity {payload['humidity']} is below h_min {mins_maxs['h_min']}")  # Debug
+        increment_counter("counter_hmin",device_id, db_info)
+    else:
+        print(f"Humidity {payload['humidity']} is within the allowed range.")  # Debug
+
+    # Check if the temperature is within a "reset" range, and reset counter if necessary
+    print(f"Checking if temperature {payload['temperature']} is below threshold {mins_maxs['t_max'] - 3}")  # Debug
+    if (payload["temperature"] < (mins_maxs["t_max"] - 3)) and (mins_maxs["counter_tmax"] > 0):  # -3 for double threshold
+        print(f"Temperature {payload['temperature']} is below threshold, resetting counter_tmax.")  # Debug
+        reset_counter("counter_tmax", db_info)
+    else:
+        print(f"Temperature {payload['temperature']} is not below the reset threshold.")  # Debug
+
+    # Check if the humidity is within a "reset" range, and reset counter if necessary
+    print(f"Checking if humidity {payload['humidity']} is above threshold {mins_maxs['h_min'] + 3}")  # Debug
+    if (payload["humidity"] > (mins_maxs["h_min"] + 3)) and (mins_maxs["counter_hmin"] > 0):  # +3 for double threshold
+        print(f"Humidity {payload['humidity']} is above threshold, resetting counter_hmin.")  # Debug
+        reset_counter("counter_hmin", db_info)
+    else:
+        print(f"Humidity {payload['humidity']} is not above the reset threshold.")  # Debug
+
+    # Add a notification if necessary
+    if mins_maxs["counter_hmin"] == 3:
+        print("Humidity is dangerously low. Adding notification...")  # Debug
         add_notification(data["device_id"], "Humidity is dangerously low")
-    if mins_maxs["counter_tmax"] > 3:
+    if mins_maxs["counter_tmax"] == 3:
+        print("Temperature is dangerously high. Adding notification...")  # Debug
         add_notification(data["device_id"], "Temperature is dangerously high")
 
 
