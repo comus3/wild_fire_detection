@@ -136,14 +136,14 @@ function prepareChartData(apiData) {
         fill: false,
       },
       {
-        label: "Flame (Digital)",
-        data: apiData.map(data => data.flameDigital || 0),
+        label: "Flame probability",
+        data: apiData.map(data => data.flameProbability || 0),
         borderColor: "red",
         fill: false,
       },
       {
         label: "Gas (CO ppm)",
-        data: apiData.map(data => data.gas || 0),
+        data: apiData.map(data => data.mq2Value || 0),
         borderColor: "purple",
         fill: false,
       },
