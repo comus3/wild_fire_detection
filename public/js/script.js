@@ -9,9 +9,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Example device data
 const devices = [
-  { id: 'wdf-end', name: 'Device 1', coords: [36.7783, -119.4179] },
-  { id: 'wdf-end', name: 'Device 2', coords: [36.9, -119.5] },
-  { id: 'wdf-end', name: 'Device 3', coords: [36.6, -119.3] }
+  { id: 'wfd-end', name: 'Device 1', coords: [36.7783, -119.4179] },
+  { id: 'wfd-end', name: 'Device 2', coords: [36.9, -119.5] },
+  { id: 'wfd-end', name: 'Device 3', coords: [36.6, -119.3] }
 ];
 
 // Add markers to the map
