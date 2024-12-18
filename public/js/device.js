@@ -20,8 +20,8 @@ function initializePage() {
 function getQueryParams() {
   const urlParams = new URLSearchParams(window.location.search);
   return {
-    deviceId: urlParams.get("device_id") || "Unknown Device",
-    deviceLocation: urlParams.get("location") || "Unknown Location",
+    deviceId: urlParams.get("device_id") || "wfd-end",
+    deviceLocation: urlParams.get("location") || "wfd-end",
   };
 }
 
