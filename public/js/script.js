@@ -27,3 +27,52 @@ devices.forEach(device => {
 function sendUrgencyAlert() {
   alert('Urgency alert sent to all devices!');
 }
+
+
+// Fetch and display notifications
+async function fetchNotifications() {
+  try {
+    // Fetch the notifications from the API
+    const response = await fetch('/api/get_notifications');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json(); // Directly parse the JSON response
+    console.log('Fetched Data:', data); // Debugging to inspect the data
+
+    // Get the alerts container
+    const alertsContainer = document.querySelector('.alerts');
+    alertsContainer.innerHTML = ''; // Clear the previous notifications
+
+    // Check if the data is an array and render notifications
+    if (Array.isArray(data) && data.length > 0) {
+      data.forEach(notification => {
+        const notificationElement = document.createElement('div');
+        notificationElement.classList.add('notification');
+
+        // Format time as a more human-readable string
+        const notificationTime = new Date(notification.time).toLocaleString();
+
+        // Render the notification message and time
+        notificationElement.innerHTML = `
+          <p><strong>Message:</strong> ${notification.message}</p>
+          <p><strong>Time:</strong> ${notificationTime}</p>
+        `;
+        alertsContainer.appendChild(notificationElement);
+      });
+    } else {
+      // Display fallback message if no notifications are available
+      alertsContainer.innerHTML = '<p>No new notifications</p>';
+    }
+  } catch (error) {
+    console.error('Error fetching notifications:', error.message);
+  }
+}
+
+
+// Fetch notifications every 5 seconds
+setInterval(fetchNotifications, 5000);
+
+// Fetch notifications immediately on page load
+fetchNotifications();
