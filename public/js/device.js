@@ -1,6 +1,7 @@
-document.addEventListener("DOMContentLoaded", initializePage);
-
 let fetchIntervalId;
+let counter = 0; // Counter to keep track of elapsed time for adjusting start_time and end_time
+
+document.addEventListener("DOMContentLoaded", initializePage);
 
 // Initialize the page on load
 function initializePage() {
@@ -70,7 +71,17 @@ async function applySettings() {
 
   // Set up periodic data fetching based on user-defined fetch frequency
   fetchIntervalId = setInterval(async () => {
-    await initializeGraph(deviceId, startTime, endTime, interval);
+    // Increment counter every interval
+    counter++;
+
+    // Adjust the start_time and end_time by the counter
+    const adjustedStartTime = new Date(new Date(startTime).getTime() + counter * 1000 * interval).toISOString();
+    const adjustedEndTime = new Date(new Date(endTime).getTime() + counter * 1000 * interval).toISOString();
+
+    console.log("Fetching data with adjusted times:", { adjustedStartTime, adjustedEndTime });
+
+    // Fetch new graph data with adjusted times
+    await initializeGraph(deviceId, adjustedStartTime, adjustedEndTime, interval);
   }, fetchFrequency * 1000);
 }
 
