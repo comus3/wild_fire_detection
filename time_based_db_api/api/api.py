@@ -215,8 +215,10 @@ def increment_counter(counter, device_id, json_data):
     return write_db_info(json_data)
 
 def reset_counter(counter, json_data):
+    #print(json_data)
     alerts = json_data.get("alerts", {})
-    device_id = json_data.get("device_id", "")
+    device_id = "wfd-end"
+    
     if device_id in alerts:
         device_alert = alerts[device_id]
         if counter in device_alert:
