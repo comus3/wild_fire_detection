@@ -12,17 +12,17 @@
     "alerts": {
         "wfd-end": {
             "t_min": null,
-            "t_max": 47,
+            "t_max": 40,
             "h_min": 10,
             "h_max": null,
             "f_min": null,
             "f_max": null,
             "gas_max": 500,
-            "ir_max": 6000,
+            "ir_max": 70,
             "counter_tmax": 0,
-            "counter_hmin": 20,
-            "counter_gas": 13,
-            "counter_ir": 9
+            "counter_hmin": 0,
+            "counter_gas": 0,
+            "counter_ir": 0
         },
         "wfd-testing": {
             "t_min": 10,
@@ -41,34 +41,14 @@
     },
     "notifications": [
         {
-            "id": "wtf-end",
-            "message": "Temperature is too high",
-            "time": "2021-07-01T12:00:00Z"
+            "id": "wfd-end",
+            "message": "Temperature is dangerously high",
+            "time": "2024-12-19T11:05:14Z"
         },
         {
-            "id": "wtf-testing",
-            "message": "Temperature is too low",
-            "time": "2021-07-01T12:00:00Z"
-        },
-        {
-            "id": "wtf-testing",
-            "message": "Humidity is too high",
-            "time": "2021-07-01T12:00:00Z"
-        },
-        {
-            "id": "wtf-testing",
-            "message": "Humidity is too low",
-            "time": "2021-07-01T12:00:00Z"
-        },
-        {
-            "id": "wtf-testing",
-            "message": "Fire is too high",
-            "time": "2021-07-01T12:00:00Z"
-        },
-        {
-            "id": "wtf-testing",
-            "message": "Fire is too low",
-            "time": "2021-07-01T12:00:00Z"
+            "id": "wfd-end",
+            "message": "IR data is dangerously high",
+            "time": "2024-12-19T11:08:26Z"
         }
     ]
 }
