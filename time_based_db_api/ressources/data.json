@@ -1078,5 +1078,221 @@
         "flameDigital": 0,
         "humidity": 100,
         "temperature": 130
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:28:10.272282619Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2773,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:28:30.706229928Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2957,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:28:50.182243783Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2829,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:29:09.406219785Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2887,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:29:29.831719800Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2485,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:29:50.314439779Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2509,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:30:09.822352892Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2891,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:30:29.564330651Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2953,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:30:49.216275068Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3007,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:31:09.208292181Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2779,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:31:29.394635644Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2743,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:31:50.313057131Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3087,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:32:11.065799263Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3029,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:32:32.055727452Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3107,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:32:52.637189910Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3066,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:33:13.583700052Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3128,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:33:33.327030375Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 3104,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:33:53.271524153Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2432,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:34:13.599397811Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2446,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:34:34.402933929Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2740,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:34:54.691793826Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2788,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:35:14.185560938Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2577,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:35:34.594420139Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2551,
+        "temperature": 0
+    },
+    {
+        "device_id": "wfd-end",
+        "timestamp": "2024-12-19T10:35:54.174501551Z",
+        "flameAnalog": 4095,
+        "flameProbability": 0,
+        "humidity": 0,
+        "mq2Value": 2761,
+        "temperature": 0
     }
 ]

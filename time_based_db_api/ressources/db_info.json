@@ -1,15 +1,15 @@
 {
-    "location" : {
-        "wfd-end" : {
-            "x" : 36.7783,
-            "y" : 119.4179
+    "location": {
+        "wfd-end": {
+            "x": 36.7783,
+            "y": 119.4179
         },
-        "wfd-testing" : {
-            "x" : 32.444,
-            "y" : 119.4179
+        "wfd-testing": {
+            "x": 32.444,
+            "y": 119.4179
         }
     },
-    "alerts" : {
+    "alerts": {
         "wfd-end": {
             "t_min": null,
             "t_max": 47,
@@ -18,11 +18,11 @@
             "f_min": null,
             "f_max": null,
             "gas_max": 500,
-            "ir_max": 1000,
+            "ir_max": 6000,
             "counter_tmax": 0,
-            "counter_hmin": 0,
-            "counter_gas": 0,
-            "counter_ir": 0
+            "counter_hmin": 20,
+            "counter_gas": 13,
+            "counter_ir": 9
         },
         "wfd-testing": {
             "t_min": 10,
@@ -31,7 +31,7 @@
             "h_max": 90,
             "f_min": 10,
             "f_max": 90,
-            "gas_max": 500,  
+            "gas_max": 500,
             "ir_max": 1000,
             "counter_tmax": 0,
             "counter_hmin": 0,
@@ -39,36 +39,36 @@
             "counter_ir": 0
         }
     },
-    "notifications" : [
+    "notifications": [
         {
-            "id" : "wtf-end",
-            "message" : "Temperature is too high",
-            "time" : "2021-07-01T12:00:00Z"
+            "id": "wtf-end",
+            "message": "Temperature is too high",
+            "time": "2021-07-01T12:00:00Z"
         },
         {
-            "id" : "wtf-testing",
-            "message" : "Temperature is too low",
-            "time" : "2021-07-01T12:00:00Z"
+            "id": "wtf-testing",
+            "message": "Temperature is too low",
+            "time": "2021-07-01T12:00:00Z"
         },
         {
-            "id" : "wtf-testing",
-            "message" : "Humidity is too high",
-            "time" : "2021-07-01T12:00:00Z"
+            "id": "wtf-testing",
+            "message": "Humidity is too high",
+            "time": "2021-07-01T12:00:00Z"
         },
         {
-            "id" : "wtf-testing",
-            "message" : "Humidity is too low",
-            "time" : "2021-07-01T12:00:00Z"
+            "id": "wtf-testing",
+            "message": "Humidity is too low",
+            "time": "2021-07-01T12:00:00Z"
         },
         {
-            "id" : "wtf-testing",
-            "message" : "Fire is too high",
-            "time" : "2021-07-01T12:00:00Z"
+            "id": "wtf-testing",
+            "message": "Fire is too high",
+            "time": "2021-07-01T12:00:00Z"
         },
         {
-            "id" : "wtf-testing",
-            "message" : "Fire is too low",
-            "time" : "2021-07-01T12:00:00Z"
+            "id": "wtf-testing",
+            "message": "Fire is too low",
+            "time": "2021-07-01T12:00:00Z"
         }
     ]
 }
