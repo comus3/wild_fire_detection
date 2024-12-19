@@ -193,20 +193,20 @@ def modify_alerts(device_id):
         return jsonify({"error": "Device ID not found"}), 404
 
 def increment_counter(counter, device_id, json_data):
-    print(f"Incrementing counter '{counter}' for device...")  # Debug
+    #print(f"Incrementing counter '{counter}' for device...")  # Debug
     alerts = json_data.get("alerts", {})
-    print(f"Alerts: {alerts}")  # Debug: Show the entire alerts section
+    #print(f"Alerts: {alerts}")  # Debug: Show the entire alerts section
 
     #device_id = json_data.get(device_id)
-    print(f"Device ID: {device_id}")  # Debug: Show the device ID
+    #print(f"Device ID: {device_id}")  # Debug: Show the device ID
 
     if device_id in alerts:
         device_alert = alerts[device_id]
-        print(f"Found alerts for device '{device_id}': {device_alert}")  # Debug: Show the device's alert data
+        #print(f"Found alerts for device '{device_id}': {device_alert}")  # Debug: Show the device's alert data
         if counter in device_alert:
-            print(f"Before incrementing, {counter}: {device_alert[counter]}")  # Debug: Show the counter value before increment
+            #print(f"Before incrementing, {counter}: {device_alert[counter]}")  # Debug: Show the counter value before increment
             device_alert[counter] += 1
-            print(f"{counter} incremented to: {device_alert[counter]}")  # Debug: Show the new counter value after increment
+            #print(f"{counter} incremented to: {device_alert[counter]}")  # Debug: Show the new counter value after increment
         else:
             print(f"Error: '{counter}' key not found in '{device_alert}' alert")
     else:
@@ -221,7 +221,7 @@ def reset_counter(counter, json_data):
         device_alert = alerts[device_id]
         if counter in device_alert:
             device_alert[counter] = 0
-            print(f"{counter} reset to: {device_alert[counter]}")
+            #print(f"{counter} reset to: {device_alert[counter]}")
         else:
             print(f"Error: '{counter}' key not found in '{device_id}' alert")
     else:
@@ -241,99 +241,85 @@ def add_notification(device_id, message):
 
 def check_alertes(data):
     # Load the alerts data from the JSON
-    print("Loading data from JSON...")
+    #print("Loading data from JSON...")
     db_info = load_db_info()
-    print(f"Loaded db_info: {db_info}")  # Debug: print the entire db_info
+    #print(f"Loaded db_info: {db_info}")  # Debug: print the entire db_info
 
     # Access the specific alert for the device from the loaded data
     try:
         mins_maxs = db_info["alerts"][data["device_id"]]
-        print(f"mins_maxs for device {data['device_id']}: {mins_maxs}")  # Debug: check mins_maxs
+        #print(f"mins_maxs for device {data['device_id']}: {mins_maxs}")  # Debug: check mins_maxs
     except KeyError as e:
         print(f"Error: Key not found - {e}")
         return  # Exit if the device_id does not exist in alerts
 
     # Copy the payload data
     payload = data.copy()
-    print(f"Payload: {payload}")  # Debug: print the payload to check its contents
+    #print(f"Payload: {payload}")  # Debug: print the payload to check its contents
     device_id = payload["device_id"]
 
     # Check if the temperature exceeds the max allowed
-    print(f"Checking if temperature {payload['temperature']} exceeds t_max {mins_maxs['t_max']}")  # Debug
+    #print(f"Checking if temperature {payload['temperature']} exceeds t_max {mins_maxs['t_max']}")  # Debug
     if payload["temperature"] > mins_maxs["t_max"]:
-        print(f"Temperature {payload['temperature']} exceeds t_max {mins_maxs['t_max']}")  # Debug
+        #print(f"Temperature {payload['temperature']} exceeds t_max {mins_maxs['t_max']}")  # Debug
         increment_counter("counter_tmax",device_id, db_info)
-    else:
-        print(f"Temperature {payload['temperature']} is within the allowed range.")  # Debug
+
 
     # Check if the humidity is below the min allowed
-    print(f"Checking if humidity {payload['humidity']} is below h_min {mins_maxs['h_min']}")  # Debug
+    #print(f"Checking if humidity {payload['humidity']} is below h_min {mins_maxs['h_min']}")  # Debug
     if payload["humidity"] < mins_maxs["h_min"]:
-        print(f"Humidity {payload['humidity']} is below h_min {mins_maxs['h_min']}")  # Debug
+        #print(f"Humidity {payload['humidity']} is below h_min {mins_maxs['h_min']}")  # Debug
         increment_counter("counter_hmin",device_id, db_info)
-    else:
-        print(f"Humidity {payload['humidity']} is within the allowed range.")  # Debug
 
     # Check if the gas concentration exceeds the max allowed
-    print(f"Checking if gas_concentration {payload['mq2Value']} exceeds gas_max {mins_maxs['gas_max']}")  # Debug
+    #print(f"Checking if gas_concentration {payload['mq2Value']} exceeds gas_max {mins_maxs['gas_max']}")  # Debug
     if payload["mq2Value"] > mins_maxs["gas_max"]:
-        print(f"Gas concentration {payload['mq2Value']} exceeds gas_max {mins_maxs['gas_max']}")  # Debug
+        #print(f"Gas concentration {payload['mq2Value']} exceeds gas_max {mins_maxs['gas_max']}")  # Debug
         increment_counter("counter_gas", device_id, db_info)
-    else:
-        print(f"Gas concentration {payload['gas_max']} is within the allowed range.")  # Debug
+
 
     # Check if the infrared data exceeds the max allowed
-    print(f"Checking if ir_data {payload['flameAnalog']} exceeds ir_max {mins_maxs['ir_max']}")  # Debug
-    if payload["flameAnalog"] > mins_maxs["ir_max"]:
-        print(f"IR data {payload['flameAnalog']} exceeds ir_max {mins_maxs['ir_max']}")  # Debug
+    #print(f"Checking if ir_data {payload['flameAnalog']} exceeds ir_max {mins_maxs['ir_max']}")  # Debug
+    if payload["flameProbability"] > mins_maxs["ir_max"]:
+        #print(f"IR data {payload['flameAnalog']} exceeds ir_max {mins_maxs['ir_max']}")  # Debug
         increment_counter("counter_ir", device_id, db_info)
-    else:
-        print(f"IR data {payload['flameAnalog']} is within the allowed range.")  # Debug
 
     # Check if the temperature is within a "reset" range, and reset counter if necessary
-    print(f"Checking if temperature {payload['temperature']} is below threshold {mins_maxs['t_max'] - 3}")  # Debug
+    #print(f"Checking if temperature {payload['temperature']} is below threshold {mins_maxs['t_max'] - 3}")  # Debug
     if (payload["temperature"] < (mins_maxs["t_max"] - 3)) and (mins_maxs["counter_tmax"] > 0):  # -3 for double threshold
-        print(f"Temperature {payload['temperature']} is below threshold, resetting counter_tmax.")  # Debug
+        #print(f"Temperature {payload['temperature']} is below threshold, resetting counter_tmax.")  # Debug
         reset_counter("counter_tmax", db_info)
-    else:
-        print(f"Temperature {payload['temperature']} is not below the reset threshold.")  # Debug
 
     # Check if the humidity is within a "reset" range, and reset counter if necessary
-    print(f"Checking if humidity {payload['humidity']} is above threshold {mins_maxs['h_min'] + 3}")  # Debug
+    #print(f"Checking if humidity {payload['humidity']} is above threshold {mins_maxs['h_min'] + 3}")  # Debug
     if (payload["humidity"] > (mins_maxs["h_min"] + 3)) and (mins_maxs["counter_hmin"] > 0):  # +3 for double threshold
-        print(f"Humidity {payload['humidity']} is above threshold, resetting counter_hmin.")  # Debug
+        #print(f"Humidity {payload['humidity']} is above threshold, resetting counter_hmin.")  # Debug
         reset_counter("counter_hmin", db_info)
-    else:
-        print(f"Humidity {payload['humidity']} is not above the reset threshold.")  # Debug
 
     # Check if the gas concentration is within a "reset" range, and reset counter if necessary
-    print(f"Checking if gas_concentration {payload['mq2Value']} is below threshold {mins_maxs['gas_max'] - 3}")  # Debug
+    #print(f"Checking if gas_concentration {payload['mq2Value']} is below threshold {mins_maxs['gas_max'] - 3}")  # Debug
     if (payload["mq2Value"] < (mins_maxs["gas_max"] - 30)) and (mins_maxs["counter_gas"] > 0):  # -3 for double threshold
-        print(f"Gas concentration {payload['mq2Value']} is below threshold, resetting counter_gas.")  # Debug
+        #print(f"Gas concentration {payload['mq2Value']} is below threshold, resetting counter_gas.")  # Debug
         reset_counter("counter_gas", db_info)
-    else:
-        print(f"Gas concentration {payload['mq2Value']} is not below the reset threshold.")  # Debug
 
     # Check if the infrared data is within a "reset" range, and reset counter if necessary
-    print(f"Checking if ir_data {payload['flameAnalog']} is below threshold {mins_maxs['ir_max'] - 3}")  # Debug
-    if (payload["flameAnalog"] < (mins_maxs["ir_max"] - 30)) and (mins_maxs["counter_ir"] > 0):  # -3 for double threshold
-        print(f"IR data {payload['flameAnalog']} is below threshold, resetting counter_ir.")  # Debug
+    #print(f"Checking if ir_data {payload['flameAnalog']} is below threshold {mins_maxs['ir_max'] - 3}")  # Debug
+    if (payload["flameProbability"] < (mins_maxs["ir_max"] - 30)) and (mins_maxs["counter_ir"] > 0):  # -3 for double threshold
+        #print(f"IR data {payload['flameAnalog']} is below threshold, resetting counter_ir.")  # Debug
         reset_counter("counter_ir", db_info)
-    else:
-        print(f"IR data {payload['flameAnalog']} is not below the reset threshold.")  # Debug
 
     # Add a notification if necessary
     if mins_maxs["counter_hmin"] == 3:
-        print("Humidity is dangerously low. Adding notification...")  # Debug
+        #print("Humidity is dangerously low. Adding notification...")  # Debug
         add_notification(data["device_id"], "Humidity is dangerously low")
     if mins_maxs["counter_tmax"] == 3:
-        print("Temperature is dangerously high. Adding notification...")  # Debug
+        #print("Temperature is dangerously high. Adding notification...")  # Debug
         add_notification(data["device_id"], "Temperature is dangerously high")
     if mins_maxs["counter_gas"] == 3:
-        print("Gas concentration is dangerously high. Adding notification...")  # Debug
+        #print("Gas concentration is dangerously high. Adding notification...")  # Debug
         add_notification(data["device_id"], "Gas concentration is dangerously high")
     if mins_maxs["counter_ir"] == 3:
-        print("IR data is dangerously high. Adding notification...")  # Debug
+        #print("IR data is dangerously high. Adding notification...")  # Debug
         add_notification(data["device_id"], "IR data is dangerously high")
 
 
