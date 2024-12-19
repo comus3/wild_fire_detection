@@ -269,6 +269,22 @@ def check_alertes(data):
     else:
         print(f"Humidity {payload['humidity']} is within the allowed range.")  # Debug
 
+    # Check if the gas concentration exceeds the max allowed
+    print(f"Checking if gas_concentration {payload['gas_concentration']} exceeds gas_max {mins_maxs['gas_max']}")  # Debug
+    if payload["gas_concentration"] > mins_maxs["gas_max"]:
+        print(f"Gas concentration {payload['gas_concentration']} exceeds gas_max {mins_maxs['gas_max']}")  # Debug
+        increment_counter("counter_gas", device_id, db_info)
+    else:
+        print(f"Gas concentration {payload['gas_concentration']} is within the allowed range.")  # Debug
+
+    # Check if the infrared data exceeds the max allowed
+    print(f"Checking if ir_data {payload['ir_data']} exceeds ir_max {mins_maxs['ir_max']}")  # Debug
+    if payload["ir_data"] > mins_maxs["ir_max"]:
+        print(f"IR data {payload['ir_data']} exceeds ir_max {mins_maxs['ir_max']}")  # Debug
+        increment_counter("counter_ir", device_id, db_info)
+    else:
+        print(f"IR data {payload['ir_data']} is within the allowed range.")  # Debug
+
     # Check if the temperature is within a "reset" range, and reset counter if necessary
     print(f"Checking if temperature {payload['temperature']} is below threshold {mins_maxs['t_max'] - 3}")  # Debug
     if (payload["temperature"] < (mins_maxs["t_max"] - 3)) and (mins_maxs["counter_tmax"] > 0):  # -3 for double threshold
@@ -285,6 +301,22 @@ def check_alertes(data):
     else:
         print(f"Humidity {payload['humidity']} is not above the reset threshold.")  # Debug
 
+    # Check if the gas concentration is within a "reset" range, and reset counter if necessary
+    print(f"Checking if gas_concentration {payload['gas_concentration']} is below threshold {mins_maxs['gas_max'] - 3}")  # Debug
+    if (payload["gas_concentration"] < (mins_maxs["gas_max"] - 30)) and (mins_maxs["counter_gas"] > 0):  # -3 for double threshold
+        print(f"Gas concentration {payload['gas_concentration']} is below threshold, resetting counter_gas.")  # Debug
+        reset_counter("counter_gas", db_info)
+    else:
+        print(f"Gas concentration {payload['gas_concentration']} is not below the reset threshold.")  # Debug
+
+    # Check if the infrared data is within a "reset" range, and reset counter if necessary
+    print(f"Checking if ir_data {payload['ir_data']} is below threshold {mins_maxs['ir_max'] - 3}")  # Debug
+    if (payload["ir_data"] < (mins_maxs["ir_max"] - 30)) and (mins_maxs["counter_ir"] > 0):  # -3 for double threshold
+        print(f"IR data {payload['ir_data']} is below threshold, resetting counter_ir.")  # Debug
+        reset_counter("counter_ir", db_info)
+    else:
+        print(f"IR data {payload['ir_data']} is not below the reset threshold.")  # Debug
+
     # Add a notification if necessary
     if mins_maxs["counter_hmin"] == 3:
         print("Humidity is dangerously low. Adding notification...")  # Debug
@@ -292,6 +324,12 @@ def check_alertes(data):
     if mins_maxs["counter_tmax"] == 3:
         print("Temperature is dangerously high. Adding notification...")  # Debug
         add_notification(data["device_id"], "Temperature is dangerously high")
+    if mins_maxs["counter_gas"] == 3:
+        print("Gas concentration is dangerously high. Adding notification...")  # Debug
+        add_notification(data["device_id"], "Gas concentration is dangerously high")
+    if mins_maxs["counter_ir"] == 3:
+        print("IR data is dangerously high. Adding notification...")  # Debug
+        add_notification(data["device_id"], "IR data is dangerously high")
 
 
 
